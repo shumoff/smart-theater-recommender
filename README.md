@@ -1,1 +1,1 @@
-# smart_theater
+# SmartTheaterRecommender

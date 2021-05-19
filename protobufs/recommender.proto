@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+message RecommendationRequest {
+    int32 user_id = 1;
+    int32 max_results = 2;
+}
+
+message MovieRecommendation {
+    int32 id = 1;
+    string title = 2;
+}
+
+message RecommendationResponse {
+    repeated MovieRecommendation recommendations = 1;
+}
+
+service Recommender {
+    rpc Recommend (RecommendationRequest) returns (RecommendationResponse);
+}
