@@ -3,9 +3,8 @@ import random
 
 import grpc
 
-from recommender_pb2 import MovieRecommendation, RecommendationResponse
-import recommender_pb2_grpc
-
+from .recommender_pb2 import MovieRecommendation, RecommendationResponse
+from . import recommender_pb2_grpc
 
 movies = [
     MovieRecommendation(id=1, title="The Maltese Falcon"),
