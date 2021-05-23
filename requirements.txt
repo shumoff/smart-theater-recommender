@@ -1,1 +1,4 @@
 grpcio-tools==1.37.1
+psycopg2-binary==2.8.6
+PyYAML~=5.4.1
+yoyo-migrations~=7.3.2
