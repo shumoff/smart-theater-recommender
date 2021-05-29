@@ -6,6 +6,7 @@ from yoyo import get_backend
 from recommender.config.base import DB_NAME, DB_USER, DB_PASSWORD
 
 
+# TODO RECOMMENDER-3: learn how to control steps
 def apply():
     backend = get_backend(f'postgres://{DB_USER}:{DB_PASSWORD}@db:5432/{DB_NAME}')
     migrations = read_migrations(os.path.dirname(os.path.abspath(__file__)))

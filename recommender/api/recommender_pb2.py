@@ -19,30 +19,37 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   syntax='proto3',
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
-  serialized_pb=b'\n\x11recommender.proto\"=\n\x15RecommendationRequest\x12\x0f\n\x07user_id\x18\x01 \x01(\x05\x12\x13\n\x0bmax_results\x18\x02 \x01(\x05\"0\n\x13MovieRecommendation\x12\n\n\x02id\x18\x01 \x01(\x05\x12\r\n\x05title\x18\x02 \x01(\t\"G\n\x16RecommendationResponse\x12-\n\x0frecommendations\x18\x01 \x03(\x0b\x32\x14.MovieRecommendation2K\n\x0bRecommender\x12<\n\tRecommend\x12\x16.RecommendationRequest\x1a\x17.RecommendationResponseb\x06proto3'
+  serialized_pb=b'\n\x11recommender.proto\"F\n\x14RelevantMovieRequest\x12\x0f\n\x07user_id\x18\x01 \x01(\x05\x12\x0e\n\x06offset\x18\x02 \x01(\x05\x12\r\n\x05limit\x18\x03 \x01(\x05\"F\n\x13SimilarMovieRequest\x12\x10\n\x08movie_id\x18\x01 \x01(\x05\x12\x0e\n\x06offset\x18\x02 \x01(\x05\x12\r\n\x05limit\x18\x03 \x01(\x05\"_\n\x1bRelevantSimilarMovieRequest\x12\x0f\n\x07user_id\x18\x01 \x01(\x05\x12\x10\n\x08movie_id\x18\x02 \x01(\x05\x12\x0e\n\x06offset\x18\x03 \x01(\x05\x12\r\n\x05limit\x18\x04 \x01(\x05\"!\n\x13MovieRecommendation\x12\n\n\x02id\x18\x01 \x01(\x05\"G\n\x16RecommendationResponse\x12-\n\x0frecommendations\x18\x01 \x03(\x0b\x32\x14.MovieRecommendation2\xef\x01\n\x0bRecommender\x12@\n\x0eRecommendMovie\x12\x15.RelevantMovieRequest\x1a\x17.RecommendationResponse\x12\x46\n\x15RecommendSimilarMovie\x12\x14.SimilarMovieRequest\x1a\x17.RecommendationResponse\x12V\n\x1dRecommendRelevantSimilarMovie\x12\x1c.RelevantSimilarMovieRequest\x1a\x17.RecommendationResponseb\x06proto3'
 )
 
 
 
 
-_RECOMMENDATIONREQUEST = _descriptor.Descriptor(
-  name='RecommendationRequest',
-  full_name='RecommendationRequest',
+_RELEVANTMOVIEREQUEST = _descriptor.Descriptor(
+  name='RelevantMovieRequest',
+  full_name='RelevantMovieRequest',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='user_id', full_name='RecommendationRequest.user_id', index=0,
+      name='user_id', full_name='RelevantMovieRequest.user_id', index=0,
       number=1, type=5, cpp_type=1, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='max_results', full_name='RecommendationRequest.max_results', index=1,
+      name='offset', full_name='RelevantMovieRequest.offset', index=1,
       number=2, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='limit', full_name='RelevantMovieRequest.limit', index=2,
+      number=3, type=5, cpp_type=1, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
@@ -60,7 +67,106 @@ _RECOMMENDATIONREQUEST = _descriptor.Descriptor(
   oneofs=[
   ],
   serialized_start=21,
-  serialized_end=82,
+  serialized_end=91,
+)
+
+
+_SIMILARMOVIEREQUEST = _descriptor.Descriptor(
+  name='SimilarMovieRequest',
+  full_name='SimilarMovieRequest',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='movie_id', full_name='SimilarMovieRequest.movie_id', index=0,
+      number=1, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='offset', full_name='SimilarMovieRequest.offset', index=1,
+      number=2, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='limit', full_name='SimilarMovieRequest.limit', index=2,
+      number=3, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=93,
+  serialized_end=163,
+)
+
+
+_RELEVANTSIMILARMOVIEREQUEST = _descriptor.Descriptor(
+  name='RelevantSimilarMovieRequest',
+  full_name='RelevantSimilarMovieRequest',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='user_id', full_name='RelevantSimilarMovieRequest.user_id', index=0,
+      number=1, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='movie_id', full_name='RelevantSimilarMovieRequest.movie_id', index=1,
+      number=2, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='offset', full_name='RelevantSimilarMovieRequest.offset', index=2,
+      number=3, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='limit', full_name='RelevantSimilarMovieRequest.limit', index=3,
+      number=4, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=165,
+  serialized_end=260,
 )
 
 
@@ -79,13 +185,6 @@ _MOVIERECOMMENDATION = _descriptor.Descriptor(
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='title', full_name='MovieRecommendation.title', index=1,
-      number=2, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=b"".decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
   ],
   extensions=[
   ],
@@ -98,8 +197,8 @@ _MOVIERECOMMENDATION = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=84,
-  serialized_end=132,
+  serialized_start=262,
+  serialized_end=295,
 )
 
 
@@ -130,22 +229,38 @@ _RECOMMENDATIONRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=134,
-  serialized_end=205,
+  serialized_start=297,
+  serialized_end=368,
 )
 
 _RECOMMENDATIONRESPONSE.fields_by_name['recommendations'].message_type = _MOVIERECOMMENDATION
-DESCRIPTOR.message_types_by_name['RecommendationRequest'] = _RECOMMENDATIONREQUEST
+DESCRIPTOR.message_types_by_name['RelevantMovieRequest'] = _RELEVANTMOVIEREQUEST
+DESCRIPTOR.message_types_by_name['SimilarMovieRequest'] = _SIMILARMOVIEREQUEST
+DESCRIPTOR.message_types_by_name['RelevantSimilarMovieRequest'] = _RELEVANTSIMILARMOVIEREQUEST
 DESCRIPTOR.message_types_by_name['MovieRecommendation'] = _MOVIERECOMMENDATION
 DESCRIPTOR.message_types_by_name['RecommendationResponse'] = _RECOMMENDATIONRESPONSE
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
-RecommendationRequest = _reflection.GeneratedProtocolMessageType('RecommendationRequest', (_message.Message,), {
-  'DESCRIPTOR' : _RECOMMENDATIONREQUEST,
+RelevantMovieRequest = _reflection.GeneratedProtocolMessageType('RelevantMovieRequest', (_message.Message,), {
+  'DESCRIPTOR' : _RELEVANTMOVIEREQUEST,
   '__module__' : 'recommender_pb2'
-  # @@protoc_insertion_point(class_scope:RecommendationRequest)
+  # @@protoc_insertion_point(class_scope:RelevantMovieRequest)
   })
-_sym_db.RegisterMessage(RecommendationRequest)
+_sym_db.RegisterMessage(RelevantMovieRequest)
+
+SimilarMovieRequest = _reflection.GeneratedProtocolMessageType('SimilarMovieRequest', (_message.Message,), {
+  'DESCRIPTOR' : _SIMILARMOVIEREQUEST,
+  '__module__' : 'recommender_pb2'
+  # @@protoc_insertion_point(class_scope:SimilarMovieRequest)
+  })
+_sym_db.RegisterMessage(SimilarMovieRequest)
+
+RelevantSimilarMovieRequest = _reflection.GeneratedProtocolMessageType('RelevantSimilarMovieRequest', (_message.Message,), {
+  'DESCRIPTOR' : _RELEVANTSIMILARMOVIEREQUEST,
+  '__module__' : 'recommender_pb2'
+  # @@protoc_insertion_point(class_scope:RelevantSimilarMovieRequest)
+  })
+_sym_db.RegisterMessage(RelevantSimilarMovieRequest)
 
 MovieRecommendation = _reflection.GeneratedProtocolMessageType('MovieRecommendation', (_message.Message,), {
   'DESCRIPTOR' : _MOVIERECOMMENDATION,
@@ -170,15 +285,35 @@ _RECOMMENDER = _descriptor.ServiceDescriptor(
   index=0,
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
-  serialized_start=207,
-  serialized_end=282,
+  serialized_start=371,
+  serialized_end=610,
   methods=[
   _descriptor.MethodDescriptor(
-    name='Recommend',
-    full_name='Recommender.Recommend',
+    name='RecommendMovie',
+    full_name='Recommender.RecommendMovie',
     index=0,
     containing_service=None,
-    input_type=_RECOMMENDATIONREQUEST,
+    input_type=_RELEVANTMOVIEREQUEST,
+    output_type=_RECOMMENDATIONRESPONSE,
+    serialized_options=None,
+    create_key=_descriptor._internal_create_key,
+  ),
+  _descriptor.MethodDescriptor(
+    name='RecommendSimilarMovie',
+    full_name='Recommender.RecommendSimilarMovie',
+    index=1,
+    containing_service=None,
+    input_type=_SIMILARMOVIEREQUEST,
+    output_type=_RECOMMENDATIONRESPONSE,
+    serialized_options=None,
+    create_key=_descriptor._internal_create_key,
+  ),
+  _descriptor.MethodDescriptor(
+    name='RecommendRelevantSimilarMovie',
+    full_name='Recommender.RecommendRelevantSimilarMovie',
+    index=2,
+    containing_service=None,
+    input_type=_RELEVANTSIMILARMOVIEREQUEST,
     output_type=_RECOMMENDATIONRESPONSE,
     serialized_options=None,
     create_key=_descriptor._internal_create_key,

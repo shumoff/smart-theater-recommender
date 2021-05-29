@@ -1,39 +1,54 @@
 from concurrent import futures
-import random
 
 import grpc
+
+from recommender.core.database.queries import get_relevant_movies, get_similar_movies, get_predicted_ratings_for_movies
 
 from .recommender_pb2 import MovieRecommendation, RecommendationResponse
 from . import recommender_pb2_grpc
 
-movies = [
-    MovieRecommendation(id=1, title="The Maltese Falcon"),
-    MovieRecommendation(id=2, title="Murder on the Orient Express"),
-    MovieRecommendation(id=3, title="The Hound of the Baskervilles"),
-    MovieRecommendation(id=4, title="The Hitchhiker's Guide to the Galaxy"),
-    MovieRecommendation(id=5, title="Ender's Game"),
-    MovieRecommendation(id=6, title="The Dune Chronicles"),
-    MovieRecommendation(id=7, title="The 7 Habits of Highly Effective People"),
-    MovieRecommendation(id=8, title="How to Win Friends and Influence People"),
-    MovieRecommendation(id=9, title="Man's Search for Meaning"),
-]
+MAX_OFFSET = 100
+MAX_LIMIT = 100
 
 
 class RecommendationService(recommender_pb2_grpc.RecommenderServicer):
-    def Recommend(self, request, context):
+    def RecommendMovie(self, request, context):
         # if request.category not in books_by_category:
         #     context.abort(grpc.StatusCode.NOT_FOUND, "Category not found")
 
-        num_results = min(request.max_results, len(movies))
-        recommended_movies = random.sample(movies, num_results)
+        offset = min(request.offset, MAX_OFFSET)
+        limit = min(request.limit, MAX_LIMIT)
+
+        recommended_movies_ids = get_relevant_movies(request.user_id, offset, limit)
+        recommended_movies = [MovieRecommendation(id=movie_id) for movie_id in recommended_movies_ids]
 
         return RecommendationResponse(recommendations=recommended_movies)
+
+    def RecommendSimilarMovie(self, request, context):
+        offset = min(request.offset, MAX_OFFSET)
+        limit = min(request.limit, MAX_LIMIT)
+
+        similar_movies_ids = get_similar_movies(request.user_id, offset, limit)
+        similar_movies = [MovieRecommendation(id=movie_id) for movie_id in similar_movies_ids]
+
+        return RecommendationResponse(recommendations=similar_movies)
+
+    def RecommendRelevantSimilarMovie(self, request, context):
+        offset = min(request.offset, MAX_OFFSET)
+        limit = min(request.limit, MAX_LIMIT)
+
+        # TODO RECOMMENDER-3: able to rewrite as one query
+        similar_movies_ids = get_similar_movies(request.movie_id, offset, limit * 2)
+        relevant_similar_movies_ids = get_predicted_ratings_for_movies(similar_movies_ids, limit)
+        relevant_similar_movies = [MovieRecommendation(id=movie_id) for movie_id in relevant_similar_movies_ids]
+
+        return RecommendationResponse(recommendations=relevant_similar_movies)
 
 
 def serve():
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
     recommender_pb2_grpc.add_RecommenderServicer_to_server(
-        RecommendationService(), server
+        RecommendationService(), server,
     )
     server.add_insecure_port("[::]:50051")
     server.start()
