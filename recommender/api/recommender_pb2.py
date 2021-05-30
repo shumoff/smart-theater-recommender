@@ -19,10 +19,56 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   syntax='proto3',
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
-  serialized_pb=b'\n\x11recommender.proto\"F\n\x14RelevantMovieRequest\x12\x0f\n\x07user_id\x18\x01 \x01(\x05\x12\x0e\n\x06offset\x18\x02 \x01(\x05\x12\r\n\x05limit\x18\x03 \x01(\x05\"F\n\x13SimilarMovieRequest\x12\x10\n\x08movie_id\x18\x01 \x01(\x05\x12\x0e\n\x06offset\x18\x02 \x01(\x05\x12\r\n\x05limit\x18\x03 \x01(\x05\"_\n\x1bRelevantSimilarMovieRequest\x12\x0f\n\x07user_id\x18\x01 \x01(\x05\x12\x10\n\x08movie_id\x18\x02 \x01(\x05\x12\x0e\n\x06offset\x18\x03 \x01(\x05\x12\r\n\x05limit\x18\x04 \x01(\x05\"!\n\x13MovieRecommendation\x12\n\n\x02id\x18\x01 \x01(\x05\"G\n\x16RecommendationResponse\x12-\n\x0frecommendations\x18\x01 \x03(\x0b\x32\x14.MovieRecommendation2\xef\x01\n\x0bRecommender\x12@\n\x0eRecommendMovie\x12\x15.RelevantMovieRequest\x1a\x17.RecommendationResponse\x12\x46\n\x15RecommendSimilarMovie\x12\x14.SimilarMovieRequest\x1a\x17.RecommendationResponse\x12V\n\x1dRecommendRelevantSimilarMovie\x12\x1c.RelevantSimilarMovieRequest\x1a\x17.RecommendationResponseb\x06proto3'
+  serialized_pb=b'\n\x11recommender.proto\"E\n\x10NewRatingRequest\x12\x0f\n\x07user_id\x18\x01 \x01(\x05\x12\x10\n\x08movie_id\x18\x02 \x01(\x05\x12\x0e\n\x06rating\x18\x03 \x01(\x05\"F\n\x14RelevantMovieRequest\x12\x0f\n\x07user_id\x18\x01 \x01(\x05\x12\x0e\n\x06offset\x18\x02 \x01(\x05\x12\r\n\x05limit\x18\x03 \x01(\x05\"F\n\x13SimilarMovieRequest\x12\x10\n\x08movie_id\x18\x01 \x01(\x05\x12\x0e\n\x06offset\x18\x02 \x01(\x05\x12\r\n\x05limit\x18\x03 \x01(\x05\"_\n\x1bRelevantSimilarMovieRequest\x12\x0f\n\x07user_id\x18\x01 \x01(\x05\x12\x10\n\x08movie_id\x18\x02 \x01(\x05\x12\x0e\n\x06offset\x18\x03 \x01(\x05\x12\r\n\x05limit\x18\x04 \x01(\x05\"!\n\x13MovieRecommendation\x12\n\n\x02id\x18\x01 \x01(\x05\"\x1b\n\rEmptyResponse\x12\n\n\x02ok\x18\x01 \x01(\x08\"G\n\x16RecommendationResponse\x12-\n\x0frecommendations\x18\x01 \x03(\x0b\x32\x14.MovieRecommendation2\xa3\x02\n\x0bRecommender\x12\x32\n\rSaveNewRating\x12\x11.NewRatingRequest\x1a\x0e.EmptyResponse\x12@\n\x0eRecommendMovie\x12\x15.RelevantMovieRequest\x1a\x17.RecommendationResponse\x12\x46\n\x15RecommendSimilarMovie\x12\x14.SimilarMovieRequest\x1a\x17.RecommendationResponse\x12V\n\x1dRecommendRelevantSimilarMovie\x12\x1c.RelevantSimilarMovieRequest\x1a\x17.RecommendationResponseb\x06proto3'
 )
 
 
+
+
+_NEWRATINGREQUEST = _descriptor.Descriptor(
+  name='NewRatingRequest',
+  full_name='NewRatingRequest',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='user_id', full_name='NewRatingRequest.user_id', index=0,
+      number=1, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='movie_id', full_name='NewRatingRequest.movie_id', index=1,
+      number=2, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='rating', full_name='NewRatingRequest.rating', index=2,
+      number=3, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=21,
+  serialized_end=90,
+)
 
 
 _RELEVANTMOVIEREQUEST = _descriptor.Descriptor(
@@ -66,8 +112,8 @@ _RELEVANTMOVIEREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=21,
-  serialized_end=91,
+  serialized_start=92,
+  serialized_end=162,
 )
 
 
@@ -112,8 +158,8 @@ _SIMILARMOVIEREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=93,
-  serialized_end=163,
+  serialized_start=164,
+  serialized_end=234,
 )
 
 
@@ -165,8 +211,8 @@ _RELEVANTSIMILARMOVIEREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=165,
-  serialized_end=260,
+  serialized_start=236,
+  serialized_end=331,
 )
 
 
@@ -197,8 +243,40 @@ _MOVIERECOMMENDATION = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=262,
-  serialized_end=295,
+  serialized_start=333,
+  serialized_end=366,
+)
+
+
+_EMPTYRESPONSE = _descriptor.Descriptor(
+  name='EmptyResponse',
+  full_name='EmptyResponse',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='ok', full_name='EmptyResponse.ok', index=0,
+      number=1, type=8, cpp_type=7, label=1,
+      has_default_value=False, default_value=False,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=368,
+  serialized_end=395,
 )
 
 
@@ -229,17 +307,26 @@ _RECOMMENDATIONRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=297,
-  serialized_end=368,
+  serialized_start=397,
+  serialized_end=468,
 )
 
 _RECOMMENDATIONRESPONSE.fields_by_name['recommendations'].message_type = _MOVIERECOMMENDATION
+DESCRIPTOR.message_types_by_name['NewRatingRequest'] = _NEWRATINGREQUEST
 DESCRIPTOR.message_types_by_name['RelevantMovieRequest'] = _RELEVANTMOVIEREQUEST
 DESCRIPTOR.message_types_by_name['SimilarMovieRequest'] = _SIMILARMOVIEREQUEST
 DESCRIPTOR.message_types_by_name['RelevantSimilarMovieRequest'] = _RELEVANTSIMILARMOVIEREQUEST
 DESCRIPTOR.message_types_by_name['MovieRecommendation'] = _MOVIERECOMMENDATION
+DESCRIPTOR.message_types_by_name['EmptyResponse'] = _EMPTYRESPONSE
 DESCRIPTOR.message_types_by_name['RecommendationResponse'] = _RECOMMENDATIONRESPONSE
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
+
+NewRatingRequest = _reflection.GeneratedProtocolMessageType('NewRatingRequest', (_message.Message,), {
+  'DESCRIPTOR' : _NEWRATINGREQUEST,
+  '__module__' : 'recommender_pb2'
+  # @@protoc_insertion_point(class_scope:NewRatingRequest)
+  })
+_sym_db.RegisterMessage(NewRatingRequest)
 
 RelevantMovieRequest = _reflection.GeneratedProtocolMessageType('RelevantMovieRequest', (_message.Message,), {
   'DESCRIPTOR' : _RELEVANTMOVIEREQUEST,
@@ -269,6 +356,13 @@ MovieRecommendation = _reflection.GeneratedProtocolMessageType('MovieRecommendat
   })
 _sym_db.RegisterMessage(MovieRecommendation)
 
+EmptyResponse = _reflection.GeneratedProtocolMessageType('EmptyResponse', (_message.Message,), {
+  'DESCRIPTOR' : _EMPTYRESPONSE,
+  '__module__' : 'recommender_pb2'
+  # @@protoc_insertion_point(class_scope:EmptyResponse)
+  })
+_sym_db.RegisterMessage(EmptyResponse)
+
 RecommendationResponse = _reflection.GeneratedProtocolMessageType('RecommendationResponse', (_message.Message,), {
   'DESCRIPTOR' : _RECOMMENDATIONRESPONSE,
   '__module__' : 'recommender_pb2'
@@ -285,13 +379,23 @@ _RECOMMENDER = _descriptor.ServiceDescriptor(
   index=0,
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
-  serialized_start=371,
-  serialized_end=610,
+  serialized_start=471,
+  serialized_end=762,
   methods=[
+  _descriptor.MethodDescriptor(
+    name='SaveNewRating',
+    full_name='Recommender.SaveNewRating',
+    index=0,
+    containing_service=None,
+    input_type=_NEWRATINGREQUEST,
+    output_type=_EMPTYRESPONSE,
+    serialized_options=None,
+    create_key=_descriptor._internal_create_key,
+  ),
   _descriptor.MethodDescriptor(
     name='RecommendMovie',
     full_name='Recommender.RecommendMovie',
-    index=0,
+    index=1,
     containing_service=None,
     input_type=_RELEVANTMOVIEREQUEST,
     output_type=_RECOMMENDATIONRESPONSE,
@@ -301,7 +405,7 @@ _RECOMMENDER = _descriptor.ServiceDescriptor(
   _descriptor.MethodDescriptor(
     name='RecommendSimilarMovie',
     full_name='Recommender.RecommendSimilarMovie',
-    index=1,
+    index=2,
     containing_service=None,
     input_type=_SIMILARMOVIEREQUEST,
     output_type=_RECOMMENDATIONRESPONSE,
@@ -311,7 +415,7 @@ _RECOMMENDER = _descriptor.ServiceDescriptor(
   _descriptor.MethodDescriptor(
     name='RecommendRelevantSimilarMovie',
     full_name='Recommender.RecommendRelevantSimilarMovie',
-    index=2,
+    index=3,
     containing_service=None,
     input_type=_RELEVANTSIMILARMOVIEREQUEST,
     output_type=_RECOMMENDATIONRESPONSE,

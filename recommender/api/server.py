@@ -2,9 +2,9 @@ from concurrent import futures
 
 import grpc
 
-from recommender.core.database.queries import get_relevant_movies, get_similar_movies, get_predicted_ratings_for_movies
+from recommender.core.database import queries
 
-from .recommender_pb2 import MovieRecommendation, RecommendationResponse
+from .recommender_pb2 import EmptyResponse, MovieRecommendation, RecommendationResponse
 from . import recommender_pb2_grpc
 
 MAX_OFFSET = 100
@@ -19,7 +19,7 @@ class RecommendationService(recommender_pb2_grpc.RecommenderServicer):
         offset = min(request.offset, MAX_OFFSET)
         limit = min(request.limit, MAX_LIMIT)
 
-        recommended_movies_ids = get_relevant_movies(request.user_id, offset, limit)
+        recommended_movies_ids = queries.get_relevant_movies(request.user_id, offset, limit)
         recommended_movies = [MovieRecommendation(id=movie_id) for movie_id in recommended_movies_ids]
 
         return RecommendationResponse(recommendations=recommended_movies)
@@ -28,7 +28,7 @@ class RecommendationService(recommender_pb2_grpc.RecommenderServicer):
         offset = min(request.offset, MAX_OFFSET)
         limit = min(request.limit, MAX_LIMIT)
 
-        similar_movies_ids = get_similar_movies(request.user_id, offset, limit)
+        similar_movies_ids = queries.get_similar_movies(request.movie_id, offset, limit)
         similar_movies = [MovieRecommendation(id=movie_id) for movie_id in similar_movies_ids]
 
         return RecommendationResponse(recommendations=similar_movies)
@@ -38,11 +38,16 @@ class RecommendationService(recommender_pb2_grpc.RecommenderServicer):
         limit = min(request.limit, MAX_LIMIT)
 
         # TODO RECOMMENDER-3: able to rewrite as one query
-        similar_movies_ids = get_similar_movies(request.movie_id, offset, limit * 2)
-        relevant_similar_movies_ids = get_predicted_ratings_for_movies(similar_movies_ids, limit)
+        similar_movies_ids = queries.get_similar_movies(request.movie_id, offset, limit * 2)
+        relevant_similar_movies_ids = queries.get_predicted_ratings_for_movies(similar_movies_ids)
         relevant_similar_movies = [MovieRecommendation(id=movie_id) for movie_id in relevant_similar_movies_ids]
 
         return RecommendationResponse(recommendations=relevant_similar_movies)
+
+    def SaveNewRating(self, request, context):
+        queries.save_new_rating(request.user_id, request.movie_id, request.rating)
+
+        return EmptyResponse(ok=True)
 
 
 def serve():

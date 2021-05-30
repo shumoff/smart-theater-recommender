@@ -29,15 +29,15 @@ def get_ratings_data():
 
     ratings_matrix = np.full((users_amount, movies_amount), np.nan)
 
-    ratings_query = f"""
+    ratings_query = """
     select uim.user_id, uim.user_index, mim.movie_id, mim.movie_index, r.rating
     from ratings r
              join user_id_mapping uim on r.user_id = uim.user_id
              join movie_id_mapping mim on r.movie_id = mim.movie_id
-    where uim.user_index < {users_amount} and mim.movie_index < {movies_amount}
+    where uim.user_index < %s and mim.movie_index < %s
     order by uim.user_index, mim.movie_index;
     """
-    cur.execute(ratings_query)
+    cur.execute(ratings_query, (users_amount, movies_amount))
     rows = cur.fetchall()
     cur.close()
     conn.close()
@@ -81,7 +81,8 @@ def get_users_memory_embeds(user_ids):
     cur = conn.cursor()
 
     cur.execute(
-        f'select embed_dim_no, embed_value from user_memory_embeds where user_id in {user_ids} order by embed_dim_no;'
+        'select embed_dim_no, embed_value from user_memory_embeds where user_id in %s order by embed_dim_no;',
+        (user_ids,)
     )
     rows = cur.fetchall()
     cur.close()
@@ -99,7 +100,8 @@ def get_movies_memory_embeds(movie_ids):
     cur = conn.cursor()
 
     cur.execute(
-        f'select embed_dim_no, embed_value from movie_memory_embeds where movie_id = {movie_ids} order by embed_dim_no;'
+        'select embed_dim_no, embed_value from movie_memory_embeds where movie_id = %s order by embed_dim_no;',
+        (movie_ids,)
     )
     rows = cur.fetchall()
     cur.close()
@@ -116,14 +118,15 @@ def get_relevant_movies(user_id, offset, limit):
     conn = get_conn()
     cur = conn.cursor()
 
-    query = f"""
+    query = """
     select pr.movie_id
     from predicted_ratings pr
             left join ratings r on pr.user_id = r.user_id and pr.movie_id = r.movie_id
-    where pr.user_id = {user_id} and r.rating is null
-    order by pr.rating desc offset {offset} limit {limit};
+    where pr.user_id = %s and r.rating is null
+    order by pr.rating desc
+    offset %s limit %s;
     """
-    cur.execute(query)
+    cur.execute(query, (user_id, offset, limit))
     rows = cur.fetchall()
     most_relevant_movies = [t[0] for t in rows]
     cur.close()
@@ -137,36 +140,62 @@ def get_similar_movies(movie_id, offset, limit, skip_watched=False):
     cur = conn.cursor()
 
     # TODO RECOMMENDER-3: implement this logic
-    query = f"""
-    select movie_id from movie_id_mapping offset {offset} limit {limit};
+    query = """
+    select movie_id from movie_id_mapping offset %s limit %s;
     """
-    cur.execute(query)
+    cur.execute(query, (offset, limit))
     rows = cur.fetchall()
     similar_movies = [t[0] for t in rows]
+    similar_movies = tuple(similar_movies)
     cur.close()
     conn.close()
 
     return similar_movies
 
 
-def get_predicted_ratings_for_movies(movie_ids, limit):
+def get_predicted_ratings_for_movies(movie_ids):
     conn = get_conn()
     cur = conn.cursor()
 
     # TODO RECOMMENDER-3: implement this logic
-    query = f"""
+    query = """
     select rating from predicted_ratings
-    where movie_id in {movie_ids}
-    order by rating desc
-    limit {limit};
+    where movie_id in %s
+    order by rating desc;
     """
-    cur.execute(query)
+    cur.execute(query, (movie_ids,))
     rows = cur.fetchall()
     similar_movies = [t[0] for t in rows]
     cur.close()
     conn.close()
 
     return similar_movies
+
+
+def save_new_rating(user_id, movie_id, rating):
+    conn = get_conn()
+    cur = conn.cursor()
+
+    cur.execute(
+        """
+        insert into ratings (user_id, movie_id, rating)
+        values (%s, %s, %s)
+        on conflict (user_id, movie_id) DO UPDATE SET rating = EXCLUDED.rating
+        """,
+        (user_id, movie_id, rating),
+    )
+
+    cur.execute(
+        """
+        delete from predicted_ratings
+        where user_id = %s and movie_id = %s
+        """,
+        (user_id, movie_id)
+    )
+
+    cur.close()
+    conn.commit()
+    conn.close()
 
 
 def save_predicted_ratings(data):
