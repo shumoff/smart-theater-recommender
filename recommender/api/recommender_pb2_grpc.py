@@ -14,9 +14,19 @@ class RecommenderStub(object):
         Args:
             channel: A grpc.Channel.
         """
-        self.Recommend = channel.unary_unary(
-                '/Recommender/Recommend',
-                request_serializer=recommender__pb2.RecommendationRequest.SerializeToString,
+        self.RecommendMovie = channel.unary_unary(
+                '/Recommender/RecommendMovie',
+                request_serializer=recommender__pb2.RelevantMovieRequest.SerializeToString,
+                response_deserializer=recommender__pb2.RecommendationResponse.FromString,
+                )
+        self.RecommendSimilarMovie = channel.unary_unary(
+                '/Recommender/RecommendSimilarMovie',
+                request_serializer=recommender__pb2.SimilarMovieRequest.SerializeToString,
+                response_deserializer=recommender__pb2.RecommendationResponse.FromString,
+                )
+        self.RecommendRelevantSimilarMovie = channel.unary_unary(
+                '/Recommender/RecommendRelevantSimilarMovie',
+                request_serializer=recommender__pb2.RelevantSimilarMovieRequest.SerializeToString,
                 response_deserializer=recommender__pb2.RecommendationResponse.FromString,
                 )
 
@@ -24,7 +34,19 @@ class RecommenderStub(object):
 class RecommenderServicer(object):
     """Missing associated documentation comment in .proto file."""
 
-    def Recommend(self, request, context):
+    def RecommendMovie(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def RecommendSimilarMovie(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def RecommendRelevantSimilarMovie(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -33,9 +55,19 @@ class RecommenderServicer(object):
 
 def add_RecommenderServicer_to_server(servicer, server):
     rpc_method_handlers = {
-            'Recommend': grpc.unary_unary_rpc_method_handler(
-                    servicer.Recommend,
-                    request_deserializer=recommender__pb2.RecommendationRequest.FromString,
+            'RecommendMovie': grpc.unary_unary_rpc_method_handler(
+                    servicer.RecommendMovie,
+                    request_deserializer=recommender__pb2.RelevantMovieRequest.FromString,
+                    response_serializer=recommender__pb2.RecommendationResponse.SerializeToString,
+            ),
+            'RecommendSimilarMovie': grpc.unary_unary_rpc_method_handler(
+                    servicer.RecommendSimilarMovie,
+                    request_deserializer=recommender__pb2.SimilarMovieRequest.FromString,
+                    response_serializer=recommender__pb2.RecommendationResponse.SerializeToString,
+            ),
+            'RecommendRelevantSimilarMovie': grpc.unary_unary_rpc_method_handler(
+                    servicer.RecommendRelevantSimilarMovie,
+                    request_deserializer=recommender__pb2.RelevantSimilarMovieRequest.FromString,
                     response_serializer=recommender__pb2.RecommendationResponse.SerializeToString,
             ),
     }
@@ -49,7 +81,7 @@ class Recommender(object):
     """Missing associated documentation comment in .proto file."""
 
     @staticmethod
-    def Recommend(request,
+    def RecommendMovie(request,
             target,
             options=(),
             channel_credentials=None,
@@ -59,8 +91,42 @@ class Recommender(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/Recommender/Recommend',
-            recommender__pb2.RecommendationRequest.SerializeToString,
+        return grpc.experimental.unary_unary(request, target, '/Recommender/RecommendMovie',
+            recommender__pb2.RelevantMovieRequest.SerializeToString,
+            recommender__pb2.RecommendationResponse.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def RecommendSimilarMovie(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/Recommender/RecommendSimilarMovie',
+            recommender__pb2.SimilarMovieRequest.SerializeToString,
+            recommender__pb2.RecommendationResponse.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def RecommendRelevantSimilarMovie(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/Recommender/RecommendRelevantSimilarMovie',
+            recommender__pb2.RelevantSimilarMovieRequest.SerializeToString,
             recommender__pb2.RecommendationResponse.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)

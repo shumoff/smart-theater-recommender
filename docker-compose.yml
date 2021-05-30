@@ -22,4 +22,5 @@ services:
     depends_on:
       - db
     volumes:
+      - .:/code
       - ./volumes/log:/var/log
