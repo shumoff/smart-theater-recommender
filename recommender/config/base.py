@@ -8,3 +8,4 @@ DB_PORT = os.environ['POSTGRES_PORT']
 
 # some business logic
 RATINGS_TO_PREDICT = 200
+SIMILAR_MOVIES_TO_SAVE = 200

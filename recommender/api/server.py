@@ -37,9 +37,11 @@ class RecommendationService(recommender_pb2_grpc.RecommenderServicer):
         offset = min(request.offset, MAX_OFFSET)
         limit = min(request.limit, MAX_LIMIT)
 
-        # TODO RECOMMENDER-3: able to rewrite as one query
-        similar_movies_ids = queries.get_similar_movies(request.movie_id, offset, limit * 2)
-        relevant_similar_movies_ids = queries.get_predicted_ratings_for_movies(similar_movies_ids)
+        # TODO RECOMMENDER-3: reinvent offsets
+        similarity_offset = limit * (offset // limit)
+        relevant_offset = offset % limit
+        similar_movies_ids = queries.get_similar_movies(request.movie_id, similarity_offset, limit * 2)
+        relevant_similar_movies_ids = queries.get_predicted_ratings_for_movies(similar_movies_ids, relevant_offset, limit)
         relevant_similar_movies = [MovieRecommendation(id=movie_id) for movie_id in relevant_similar_movies_ids]
 
         return RecommendationResponse(recommendations=relevant_similar_movies)

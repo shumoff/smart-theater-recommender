@@ -5,5 +5,5 @@ CREATE TABLE movie_id_mapping
 (
     movie_id    integer PRIMARY KEY,
     movie_index integer UNIQUE NOT NULL,
-    trained     boolean        NOT NULL
+    trained     boolean DEFAULT false
 );

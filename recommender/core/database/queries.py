@@ -7,7 +7,15 @@ from psycopg2.extras import execute_values
 from recommender.config import DB_NAME, DB_PASSWORD, DB_USER, DB_HOST, DB_PORT
 
 
-def get_conn():
+def get_conn(another=False):
+    if another:
+        return psycopg2.connect(
+            dbname='smart_theater_db',
+            user='smart_theater_user',
+            password='smart_theater_password',
+            host='host.docker.internal',
+            port=5432,
+        )
     return psycopg2.connect(
         dbname=DB_NAME,
         user=DB_USER,
@@ -139,11 +147,13 @@ def get_similar_movies(movie_id, offset, limit, skip_watched=False):
     conn = get_conn()
     cur = conn.cursor()
 
-    # TODO RECOMMENDER-3: implement this logic
     query = """
-    select movie_id from movie_id_mapping offset %s limit %s;
+    select similar_movie_id from predicted_similarities
+    where movie_id = %s
+    order by similarity desc
+    offset %s limit %s;
     """
-    cur.execute(query, (offset, limit))
+    cur.execute(query, (movie_id, offset, limit))
     rows = cur.fetchall()
     similar_movies = [t[0] for t in rows]
     similar_movies = tuple(similar_movies)
@@ -153,7 +163,7 @@ def get_similar_movies(movie_id, offset, limit, skip_watched=False):
     return similar_movies
 
 
-def get_predicted_ratings_for_movies(movie_ids):
+def get_predicted_ratings_for_movies(movie_ids, offset, limit):
     conn = get_conn()
     cur = conn.cursor()
 
@@ -161,7 +171,8 @@ def get_predicted_ratings_for_movies(movie_ids):
     query = """
     select rating from predicted_ratings
     where movie_id in %s
-    order by rating desc;
+    order by rating desc
+    offset %s limit %s;
     """
     cur.execute(query, (movie_ids,))
     rows = cur.fetchall()
@@ -231,7 +242,7 @@ def save_object_embeddings(data, which: Literal['user', 'movie']):
             """
             insert into user_memory_embeds (user_id, embed_dim_no, embed_value)
             values %s
-            on conflict (user_id, movie_id) DO UPDATE SET rating = EXCLUDED.rating
+            on conflict (user_id, embed_dim_no) DO UPDATE SET embed_value = EXCLUDED.embed_value
             """,
             data,
             page_size=10000,
@@ -242,11 +253,51 @@ def save_object_embeddings(data, which: Literal['user', 'movie']):
             """
             insert into movie_memory_embeds (movie_id, embed_dim_no, embed_value)
             values %s
-            on conflict (user_id, embed_dim_no) DO UPDATE SET embed_value = EXCLUDED.embed_value
+            on conflict (movie_id, embed_dim_no) DO UPDATE SET embed_value = EXCLUDED.embed_value
             """,
             data,
             page_size=10000,
         )
+
+    cur.close()
+    conn.commit()
+    conn.close()
+
+
+def save_predicted_similarities(data):
+    conn = get_conn()
+    cur = conn.cursor()
+
+    execute_values(
+        cur,
+        """
+        insert into predicted_similarities (movie_id, similar_movie_id, similarity)
+        values %s
+        on conflict (movie_id, similar_movie_id) DO UPDATE SET similarity = EXCLUDED.similarity
+        """,
+        data,
+        page_size=10000,
+    )
+
+    cur.close()
+    conn.commit()
+    conn.close()
+
+
+def save_content_movie_embeddings(data):
+    conn = get_conn()
+    cur = conn.cursor()
+
+    execute_values(
+        cur,
+        """
+        insert into movie_content_embeds (movie_id, embed_dim_no, embed_value)
+        values %s
+        on conflict (movie_id, embed_dim_no) DO UPDATE SET embed_value = EXCLUDED.embed_value
+        """,
+        data,
+        page_size=10000,
+    )
 
     cur.close()
     conn.commit()
