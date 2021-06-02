@@ -31,7 +31,6 @@ class SGDFactorization:
 
     current_epoch = 0
     predicted_ratings = None
-    n_relevant_ratings_to_save = 50
 
     params = ['epochs', 'n_factors', 'learning_rate', 'reg']
 
@@ -122,7 +121,7 @@ class SGDFactorization:
 
             for embed_dim_no in range(self.n_factors):
                 embed_value = object_embeddings[object_index][embed_dim_no]
-                object_embeds.append((object_id, embed_dim_no + 1, embed_value))
+                object_embeds.append((object_id, embed_dim_no + 1, float(embed_value)))
 
         queries.save_object_embeddings(object_embeds, which=which)
 
@@ -142,7 +141,7 @@ class SGDFactorization:
                     break
 
                 user_id = self.user_index_to_id[user_index]
-                movie_id = sorted_movie_ids[user_index][i]
-                data.append((user_id, movie_id, rating))
+                movie_id = int(sorted_movie_ids[user_index][i])
+                data.append((user_id, movie_id, float(rating)))
 
         queries.save_predicted_ratings(data)

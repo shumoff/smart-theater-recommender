@@ -14,6 +14,11 @@ class RecommenderStub(object):
         Args:
             channel: A grpc.Channel.
         """
+        self.SaveNewRating = channel.unary_unary(
+                '/Recommender/SaveNewRating',
+                request_serializer=recommender__pb2.NewRatingRequest.SerializeToString,
+                response_deserializer=recommender__pb2.EmptyResponse.FromString,
+                )
         self.RecommendMovie = channel.unary_unary(
                 '/Recommender/RecommendMovie',
                 request_serializer=recommender__pb2.RelevantMovieRequest.SerializeToString,
@@ -33,6 +38,12 @@ class RecommenderStub(object):
 
 class RecommenderServicer(object):
     """Missing associated documentation comment in .proto file."""
+
+    def SaveNewRating(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
 
     def RecommendMovie(self, request, context):
         """Missing associated documentation comment in .proto file."""
@@ -55,6 +66,11 @@ class RecommenderServicer(object):
 
 def add_RecommenderServicer_to_server(servicer, server):
     rpc_method_handlers = {
+            'SaveNewRating': grpc.unary_unary_rpc_method_handler(
+                    servicer.SaveNewRating,
+                    request_deserializer=recommender__pb2.NewRatingRequest.FromString,
+                    response_serializer=recommender__pb2.EmptyResponse.SerializeToString,
+            ),
             'RecommendMovie': grpc.unary_unary_rpc_method_handler(
                     servicer.RecommendMovie,
                     request_deserializer=recommender__pb2.RelevantMovieRequest.FromString,
@@ -79,6 +95,23 @@ def add_RecommenderServicer_to_server(servicer, server):
  # This class is part of an EXPERIMENTAL API.
 class Recommender(object):
     """Missing associated documentation comment in .proto file."""
+
+    @staticmethod
+    def SaveNewRating(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/Recommender/SaveNewRating',
+            recommender__pb2.NewRatingRequest.SerializeToString,
+            recommender__pb2.EmptyResponse.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
     @staticmethod
     def RecommendMovie(request,

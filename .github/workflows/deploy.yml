@@ -1,0 +1,35 @@
+name: Deploy application
+on:
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-18.04
+    steps:
+      - name: Check Out Repo
+        uses: actions/checkout@v2
+
+      - name: copy docker-compose
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.DEPLOY_SERVER_HOST }}
+          username: ${{ secrets.DEPLOY_SERVER_USERNAME }}
+          port: ${{ secrets.DEPLOY_SERVER_PORT }}
+          key: ${{ secrets.DEPLOY_SERVER_KEY }}
+          source: "docker-compose.prod.yml"
+          target: "/home/${{ secrets.DEPLOY_SERVER_USERNAME }}/smart-theater/recommender"
+
+      - name: rerun application
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.DEPLOY_SERVER_HOST }}
+          username: ${{ secrets.DEPLOY_SERVER_USERNAME }}
+          key: ${{ secrets.DEPLOY_SERVER_KEY }}
+          port: ${{ secrets.DEPLOY_SERVER_PORT }}
+          script: |
+            cd /home/${{ secrets.DEPLOY_SERVER_USERNAME }}/smart-theater/recommender
+            docker-compose -f docker-compose.prod.yml pull
+            docker-compose down
+            mv docker-compose.prod.yml docker-compose.yml
+            rm docker-compose.prod.yml
+            docker-compose up -d

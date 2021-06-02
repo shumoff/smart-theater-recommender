@@ -10,7 +10,7 @@ services:
       - ./volumes/postgresql/pg-data:/var/lib/postgresql/data
 
   web:
-    build: .
+    image: shumoff/smart-theater-recommender:latest
     command: python run.py serve
     restart: always
     env_file:
@@ -20,5 +20,4 @@ services:
     depends_on:
       - db
     volumes:
-      - .:/code
       - ./volumes/log:/var/log
