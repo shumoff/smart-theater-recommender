@@ -1,15 +1,19 @@
 version: '3'
 
 services:
-  db:
+  recommender_db:
     image: postgres:12.2
     restart: always
     env_file:
       - ./.env
+    ports:
+      - "6432:5432"
+    networks:
+      - smart-theater
     volumes:
       - ./volumes/postgresql/pg-data:/var/lib/postgresql/data
 
-  web:
+  recommender_grpc:
     build: .
     command: python run.py serve
     restart: always
@@ -17,8 +21,14 @@ services:
       - ./.env
     ports:
       - "50051:50051"
+    networks:
+      - smart-theater
     depends_on:
-      - db
+      - recommender_db
     volumes:
       - .:/code
       - ./volumes/log:/var/log
+
+networks:
+  smart-theater:
+    name: smart-theater
